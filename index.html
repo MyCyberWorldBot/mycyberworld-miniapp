@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="My Cyber World - Cybercrime Investigation & OSINT Panel">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+
+    <title>My Cyber World — Investigation Panel</title>
+
+    <!-- Favicon (prevents 404) -->
+    <link rel="icon" href="data:,">
+
+    <!-- Preconnect for faster Telegram SDK load -->
+    <link rel="preconnect" href="https://telegram.org" crossorigin>
+
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header">
+        <div class="header-logo">
+            <span class="logo-icon" aria-hidden="true">🔒</span>
+            <div>
+                <h1 class="header-title">My Cyber World</h1>
+                <p class="header-subtitle">Investigation Panel</p>
+            </div>
+        </div>
+        <div class="header-badge" aria-label="Verified Service">Verified</div>
+    </header>
+
+    <!-- ==================== WELCOME STRIP ==================== -->
+    <div class="welcome-strip">
+        <p>👋 Welcome, <span id="user-name">Investigator</span></p>
+        <p class="welcome-tagline">
+            🛡️ Confidential • ⚖️ Lawful & Authorised • 🔍 Evidence-Led
+        </p>
+    </div>
+
+    <!-- ==================== WALLET SECTION ==================== -->
+    <section class="wallet-section" id="wallet-section" aria-label="My Wallet">
+        <div class="wallet-card" id="wallet-card">
+            <div class="wallet-top">
+                <div class="wallet-label">
+                    <span class="wallet-icon" aria-hidden="true">💰</span>
+                    <span>My Wallet</span>
+                </div>
+                <button class="wallet-refresh" id="wallet-refresh" type="button" aria-label="Refresh balance">↻</button>
+            </div>
+
+            <div class="wallet-balance">
+                <span class="balance-amount" id="wallet-balance">₹0</span>
+                <span class="balance-label" id="wallet-hint">👋 Add money to start</span>
+            </div>
+
+            <button class="add-money-btn" id="add-money-btn" type="button">
+                <span class="add-money-icon" aria-hidden="true">+</span>
+                <span>Add Money to Wallet</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- ==================== OFFER BANNER (Phase 4.3) ==================== -->
+    <div class="offer-banner" id="offer-banner" style="display: none;">
+        <button class="offer-close" id="offer-close" type="button" aria-label="Dismiss offer">✕</button>
+        <div class="offer-icon" aria-hidden="true">🎁</div>
+        <div class="offer-content">
+            <div class="offer-title" id="offer-title">Special Offer</div>
+            <div class="offer-desc" id="offer-desc">Bonus on top-ups</div>
+        </div>
+        <div class="offer-timer" id="offer-timer">—</div>
+    </div>
+
+    <!-- ==================== LOADING STATE ==================== -->
+    <div id="loading" class="loading-state" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Loading services...</p>
+    </div>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main id="app" class="app-container" role="main"></main>
+
+    <!-- ==================== ERROR STATE ==================== -->
+    <div id="error-state" class="error-state" style="display: none;" role="alert">
+        <p class="error-title">❌ Failed to load services</p>
+        <p class="error-sub">Please close and reopen the panel.</p>
+        <button class="error-retry-btn" type="button" onclick="location.reload()" aria-label="Retry loading services">
+            🔄 Retry
+        </button>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer" role="contentinfo">
+        <p>Prepared by <strong>SK</strong></p>
+        <p class="footer-sub">
+            Cybercrime Investigation Professional | Ethical Hacker | OSINT Analyst
+        </p>
+        <p class="footer-contact">📩 @skhackerx</p>
+        <p class="footer-copyright">
+            © 2026 My Cyber World — For Authorised Use Only
+        </p>
+    </footer>
+
+    <!-- ==================== SCRIPT ==================== -->
+    <script src="script.js"></script>
+
+</body>
+</html>

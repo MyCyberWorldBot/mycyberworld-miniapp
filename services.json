@@ -1,0 +1,88 @@
+{
+  "version": "1.1.0",
+  "last_updated": "2026-10-05",
+  "brand": {
+    "name": "My Cyber World",
+    "tagline": "Cybercrime Investigation & OSINT Services",
+    "investigator": "Shashikant Kumar",
+    "designation": "Cybercrime Investigation Professional | Ethical Hacker | OSINT Analyst",
+    "contact": "@skhackerx"
+  },
+  "wallet": {
+    "currency": "INR",
+    "currency_symbol": "₹",
+    "min_topup": 300,
+    "max_topup": 50000,
+    "preset_amounts": [500, 1000, 5000, 10000, 25000, 50000],
+    "bonus_tiers": [
+      { "min": 300,   "max": 999,   "percent": 0,  "label": "No bonus" },
+      { "min": 1000,  "max": 4999,  "percent": 2,  "label": "2% bonus" },
+      { "min": 5000,  "max": 9999,  "percent": 5,  "label": "5% bonus" },
+      { "min": 10000, "max": 24999, "percent": 7,  "label": "7% bonus" },
+      { "min": 25000, "max": 50000, "percent": 10, "label": "10% bonus" }
+    ],
+    "topup_expiry_minutes": 5
+  },
+  "services": [
+    {
+      "code": "S01",
+      "name": "Mobile Number Details",
+      "description": "Personal details, contact associations & exposure review",
+      "price": 250,
+      "currency": "INR",
+      "api_feature": "lookup_number",
+      "input_label": "Enter 10-digit Mobile Number",
+      "input_type": "tel",
+      "input_placeholder": "9876543210",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 1,
+      "fields_to_show": null
+    },
+    {
+      "code": "S27",
+      "name": "UPI Details Check",
+      "description": "UPI name, handle, bank/provider & fraud-indicator review",
+      "price": 300,
+      "currency": "INR",
+      "api_feature": "upi_to_info",
+      "input_label": "Enter UPI ID",
+      "input_type": "text",
+      "input_placeholder": "user@okicici",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 2,
+      "fields_to_show": null
+    },
+    {
+      "code": "S19",
+      "name": "Aadhaar Details Check",
+      "description": "Authorised identity, address & associated-information review",
+      "price": 300,
+      "currency": "INR",
+      "api_feature": "aadhaar_info",
+      "input_label": "Enter 12-digit Aadhaar Number",
+      "input_type": "tel",
+      "input_placeholder": "212028834716",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 3,
+      "fields_to_show": null
+    },
+    {
+      "code": "S22",
+      "name": "PAN Details Check",
+      "description": "PAN holder details, status & available linked information",
+      "price": 250,
+      "currency": "INR",
+      "api_feature": "pan_info",
+      "input_label": "Enter 10-character PAN Number",
+      "input_type": "text",
+      "input_placeholder": "AAYFK4129N",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 4,
+      "fields_to_show": null
+    }
+  ]
+}
