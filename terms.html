@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Terms and Conditions - My Cyber World OSINT Investigation Panel">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="format-detection" content="telephone=no">
+    <title>Terms &amp; Conditions — My Cyber World</title>
+    <link rel="icon" href="data:,">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            padding-top: calc(20px + env(safe-area-inset-top, 0px));
+            padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+            line-height: 1.7;
+            font-size: clamp(14px, 3.8vw, 16px);
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0 30px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #60a5fa;
+            font-size: clamp(20px, 5.5vw, 24px);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: background 0.15s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .back-btn:hover,
+        .back-btn:active {
+            background: #334155;
+        }
+
+        .notice {
+            background: #1e293b;
+            border-left: 4px solid #f59e0b;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .notice strong { color: #f59e0b; }
+
+        h2 {
+            color: #60a5fa;
+            font-size: clamp(16px, 4.5vw, 18px);
+            margin-top: 30px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #1e293b;
+            font-weight: 700;
+        }
+
+        p { margin-bottom: 12px; color: #cbd5e1; }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+            list-style: disc;
+        }
+
+        ul ul {
+            margin-top: 6px;
+            list-style: circle;
+        }
+
+        li { margin-bottom: 6px; color: #cbd5e1; }
+
+        strong { color: #f1f5f9; font-weight: 600; }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 280px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #1e293b;
+            word-break: break-word;
+        }
+
+        th {
+            background: #1e293b;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        td { color: #cbd5e1; }
+
+        .contact {
+            background: #1e293b;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .contact p { margin-bottom: 6px; }
+        .contact p:last-child { margin-bottom: 0; }
+
+        a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        a:hover { text-decoration: underline; }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #1e293b;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .final-note {
+            margin-top: 30px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Small phones */
+        @media (max-width: 380px) {
+            body { padding: 14px; padding-top: calc(14px + env(safe-area-inset-top, 0px)); }
+            .header h1 { font-size: 18px; }
+            h2 { font-size: 15px; }
+            th, td { padding: 8px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📜 Terms &amp; Conditions</h1>
+            <p class="subtitle">My Cyber World — Last Updated: 07 October 2026</p>
+        </div>
+
+        <button class="back-btn" id="back-btn" type="button">← Back to App</button>
+
+        <div class="notice">
+            <strong>⚠️ IMPORTANT:</strong> My Cyber World is a <strong>personal, non-commercial project</strong>
+            provided free of cost as a public utility for lawful OSINT investigation.
+            It is NOT a business entity. By using this service, you agree to the terms below.
+        </div>
+
+        <h2>1. Authorized &amp; Lawful Use Only</h2>
+        <ul>
+            <li>This service is strictly for <strong>lawful investigation purposes</strong> only.</li>
+            <li>You confirm that you are either:
+                <ul>
+                    <li>The owner of the data being investigated, OR</li>
+                    <li>A legally authorized representative (law enforcement, licensed investigator, or holder of valid written consent)</li>
+                </ul>
+            </li>
+            <li>Misuse for stalking, harassment, unauthorized surveillance, or illegal activities is prohibited.</li>
+            <li>Violations may result in immediate block + legal action.</li>
+        </ul>
+
+        <h2>2. Service Nature</h2>
+        <ul>
+            <li>Provides OSINT-based information retrieval via third-party APIs.</li>
+            <li>No guarantee of accuracy, completeness, or availability of data.</li>
+            <li>All data is provided "as is" from external sources.</li>
+        </ul>
+
+        <h2>3. Payment &amp; Wallet</h2>
+        <ul>
+            <li>Minimum top-up: <strong>₹300</strong> | Maximum: <strong>₹50,000</strong></li>
+            <li>Wallet balance is non-transferable.</li>
+            <li>Service charges are deducted from wallet at request time.</li>
+        </ul>
+
+        <h2>4. Refund Policy (Auto-Refund)</h2>
+        <p>Automatic refund system:</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Scenario</th><th>Refund</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>API technical failure</td><td><strong>100%</strong> to wallet</td></tr>
+                    <tr><td>Data not available</td><td><strong>80%</strong> to wallet</td></tr>
+                    <tr><td>PDF generation failure</td><td><strong>100%</strong> to wallet</td></tr>
+                    <tr><td>Successful delivery</td><td>No refund</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <ul>
+            <li>Refunds are automatic within seconds.</li>
+            <li>No manual requests needed.</li>
+        </ul>
+
+        <h2>5. No Warranty</h2>
+        <ul>
+            <li>Content provided "as is" without warranties.</li>
+            <li>We are not liable for decisions based on retrieved data.</li>
+        </ul>
+
+        <h2>6. User Responsibility</h2>
+        <ul>
+            <li>Use at your own risk.</li>
+            <li>Misuse of information is solely the user's responsibility.</li>
+            <li>Admin/owner not liable for consequences of misuse.</li>
+        </ul>
+
+        <h2>7. Copyright &amp; Fair Use</h2>
+        <ul>
+            <li>Data may include copyrighted material under fair use.</li>
+            <li>We do not claim ownership of external data.</li>
+            <li>Rights holders may contact <strong>@skhackerx</strong> for takedown.</li>
+        </ul>
+
+        <h2>8. Privacy &amp; Data Handling</h2>
+        <ul>
+            <li>We collect only: Telegram user ID, username, first name, wallet transactions.</li>
+            <li>Payment info is processed via UPI (we do not store card/bank credentials).</li>
+            <li>Bank emails parsed for UTR verification only.</li>
+            <li>Request logs: <strong>30 days retention</strong>.</li>
+            <li>Data deleted after retention period.</li>
+        </ul>
+
+        <h2>9. Account Blocking</h2>
+        <ul>
+            <li>Fraud, UTR reuse, multiple-account abuse → permanent block without refund.</li>
+            <li>Fraud detection is automatic (4-tier risk scoring).</li>
+        </ul>
+
+        <h2>10. Acceptance of Risks</h2>
+        <ul>
+            <li>Cybersecurity investigation involves sensitive information.</li>
+            <li>Users accept all risks.</li>
+            <li>Admin/owner not responsible for harm, damages, or liabilities.</li>
+        </ul>
+
+        <h2>11. Amendments</h2>
+        <ul>
+            <li>We reserve the right to modify these T&amp;C anytime.</li>
+            <li>Continued use after changes = acceptance.</li>
+        </ul>
+
+        <h2>12. Contact</h2>
+        <div class="contact">
+            <p>💬 <strong>Support:</strong> @skhackerx</p>
+            <p>📢 <strong>Channel:</strong> @MyCyberWorldUpdates</p>
+        </div>
+
+        <p class="final-note">
+            By continuing to use My Cyber World, you agree to these terms.
+            If you do not agree, please stop using the service.
+        </p>
+
+        <div class="footer">
+            © 2026 My Cyber World — For Authorized Use Only
+        </div>
+    </div>
+
+    <script>
+        // ==================== TELEGRAM SDK INIT ====================
+        try {
+            const tg = window.Telegram && window.Telegram.WebApp;
+            if (tg) {
+                tg.ready();
+                try { tg.expand(); } catch (e) { /* Ignore */ }
+                try {
+                    if (tg.setHeaderColor) tg.setHeaderColor("#0f172a");
+                    if (tg.setBackgroundColor) tg.setBackgroundColor("#0f172a");
+                } catch (e) { /* Ignore */ }
+            }
+        } catch (e) {
+            console.warn("Telegram SDK init failed:", e);
+        }
+
+        // ==================== BACK BUTTON ====================
+        (function () {
+            const btn = document.getElementById("back-btn");
+            if (!btn) return;
+
+            btn.addEventListener("click", function () {
+                try {
+                    // Prefer going back in history if we came from somewhere
+                    if (window.history.length > 1) {
+                        window.history.back();
+                        // Fallback if back doesn't work within 300ms
+                        setTimeout(function () {
+                            if (document.visibilityState === "visible") {
+                                window.location.href = "index.html";
+                            }
+                        }, 300);
+                    } else {
+                        // No history → direct navigation
+                        window.location.href = "index.html";
+                    }
+                } catch (e) {
+                    console.warn("Back navigation failed:", e);
+                    window.location.href = "index.html";
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
