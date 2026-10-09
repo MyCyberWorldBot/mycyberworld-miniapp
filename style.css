@@ -1,10 +1,11 @@
 /* ==================================================
-   MY CYBER WORLD — Mini App Styles (Production v2.4)
+   MY CYBER WORLD — Mini App Styles (Production v2.5)
    Dark Theme • Premium • Accessible • Mobile-First
    + Wallet Section
    + Modal Scroll Lock
    + Offer Banner + Close Button (Phase 4.3)
    + Footer T&C Link (Phase 5.2.2e+)
+   + Refer & Earn Section (Phase 6.1)
    ================================================== */
 
 /* ==================== ROOT VARIABLES ==================== */
@@ -21,6 +22,10 @@
     --green: #10b981;
     --green-dark: #059669;
     --red: #ef4444;
+
+    /* Referral gradient */
+    --referral-from: #667eea;
+    --referral-to: #764ba2;
 
     /* Safe areas (iPhone notch) */
     --safe-top: env(safe-area-inset-top, 0px);
@@ -347,6 +352,149 @@ body:has(.modal-overlay.active) {
     border-radius: 6px;
     border: 1px solid rgba(245, 158, 11, 0.3);
     white-space: nowrap;
+}
+
+/* ==================== REFERRAL SECTION (Phase 6.1) ==================== */
+.referral-section {
+    padding: 0 16px 16px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.referral-card {
+    background: linear-gradient(135deg, var(--referral-from) 0%, var(--referral-to) 100%);
+    border-radius: 16px;
+    padding: 18px 20px;
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.referral-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.referral-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+.referral-icon {
+    font-size: 24px;
+    line-height: 1;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+}
+
+.referral-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0;
+    flex: 1;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+}
+
+.referral-badge {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.referral-desc {
+    font-size: 13px;
+    opacity: 0.95;
+    margin: 0 0 14px 0;
+    line-height: 1.5;
+    position: relative;
+}
+
+.referral-desc b {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.referral-link-row {
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.referral-link-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    padding: 11px 14px;
+    color: #ffffff;
+    font-size: 12px;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    box-sizing: border-box;
+    outline: none;
+    text-overflow: ellipsis;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.referral-link-input:focus {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.referral-actions {
+    display: flex;
+    gap: 10px;
+    position: relative;
+}
+
+.referral-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+    color: #4c1d95;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform var(--transition-fast), background var(--transition-fast);
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.referral-btn:active {
+    transform: scale(0.97);
+    background: #ffffff;
+}
+
+.referral-btn-copy {
+    /* Placeholder — inherits .referral-btn default styling */
+    /* Explicit no-op for future customization */
+    font-family: inherit;
+}
+
+.referral-btn-share {
+    background: #ffffff;
 }
 
 /* ==================== WALLET MODAL EXTRAS ==================== */
@@ -887,6 +1035,14 @@ body:has(.modal-overlay.active) {
     .offer-desc { font-size: 11px; }
     .offer-timer { font-size: 11px; padding: 3px 6px; }
     .footer-link { font-size: 12px; padding: 5px 10px; }
+
+    /* Referral responsive */
+    .referral-section { padding: 0 12px 12px; }
+    .referral-title { font-size: 15px; }
+    .referral-badge { font-size: 10px; padding: 3px 8px; }
+    .referral-desc { font-size: 12px; }
+    .referral-link-input { font-size: 11px; padding: 10px 12px; }
+    .referral-btn { font-size: 12px; padding: 11px 8px; }
 }
 
 @media (min-width: 768px) {

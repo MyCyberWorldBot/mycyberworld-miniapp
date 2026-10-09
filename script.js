@@ -1,12 +1,13 @@
 /**
  * MyCyberWorld Bot - Mini App Frontend Logic
- * Flat services + wallet + offer banner + Telegram integration.
+ * Flat services + wallet + offer banner + referral section + Telegram integration.
  *
  * Design:
  * - Wallet: Blue theme, ₹ Indian format, English only
  * - Payment flow: QR in Telegram (Mini App closes)
  * - Range: ₹300 - ₹50,000
  * - Offer banner: reads offers.json, session-based dismiss
+ * - Referral: user_id from Telegram SDK → link + copy + share (Phase 6.1)
  */
 
 // ==================== TELEGRAM WEB APP INIT ====================
@@ -128,6 +129,103 @@ function calculateBonus(amount) {
     const amt = Number(amount) || 0;
     const percent = getBonusPercent(amt);
     return Math.round(amt * (percent / 100));
+}
+
+
+// ==================== REFERRAL SECTION (Phase 6.1) ====================
+
+/**
+ * Initialize referral section: link + copy + share buttons.
+ *
+ * Uses Telegram SDK user_id for personal link generation.
+ * Silent no-op if user_id unavailable.
+ */
+function initReferralSection() {
+    // --- Get user_id from Telegram SDK ---
+    let userId = null;
+    try {
+        userId = tg.initDataUnsafe?.user?.id;
+    } catch (e) {
+        console.warn("[Referral] Could not read user_id from SDK:", e);
+    }
+
+    if (!userId) {
+        console.warn("[Referral] No user_id — hiding referral section");
+        const section = document.getElementById("referral-section");
+        if (section) section.style.display = "none";
+        return;
+    }
+
+    // --- Build referral link ---
+    const link = `https://t.me/MyCyberWorldBot?start=ref_${userId}`;
+
+    // --- Set link in input field ---
+    const linkInput = document.getElementById("referral-link");
+    if (linkInput) linkInput.value = link;
+
+    // --- Copy button ---
+    const copyBtn = document.getElementById("referral-copy-btn");
+    if (copyBtn) {
+        copyBtn.addEventListener("click", async () => {
+            haptic("light");
+
+            // Try modern clipboard API first
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(link);
+                    safeAlert("✅ Referral link copied!");
+                    return;
+                }
+            } catch (e) {
+                console.warn("[Referral] clipboard.writeText failed:", e);
+            }
+
+            // Fallback: select + execCommand (works in older WebViews)
+            try {
+                if (linkInput) {
+                    linkInput.select();
+                    linkInput.setSelectionRange(0, 99999); // for iOS
+                    const ok = document.execCommand("copy");
+                    if (ok) {
+                        safeAlert("✅ Referral link copied!");
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.warn("[Referral] execCommand fallback failed:", e);
+            }
+
+            // Final fallback
+            safeAlert("Copy failed. Long-press the link to copy manually.");
+        });
+    }
+
+    // --- Share button ---
+    const shareBtn = document.getElementById("referral-share-btn");
+    if (shareBtn) {
+        shareBtn.addEventListener("click", () => {
+            haptic("medium");
+
+            const shareText =
+                "🎁 Join My Cyber World and get ₹25 welcome bonus on your first payment!";
+            const shareUrl =
+                `https://t.me/share/url?url=${encodeURIComponent(link)}` +
+                `&text=${encodeURIComponent(shareText)}`;
+
+            try {
+                if (tg.openTelegramLink) {
+                    tg.openTelegramLink(shareUrl);
+                } else {
+                    window.open(shareUrl, "_blank");
+                }
+            } catch (e) {
+                console.warn("[Referral] Share failed:", e);
+                safeAlert("Could not open share. Please copy the link instead.");
+            }
+        });
+    }
+
+    console.log("[Referral] Section initialized for user:", userId);
 }
 
 
@@ -773,6 +871,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (offerCloseBtn) {
         offerCloseBtn.addEventListener("click", hideOfferBanner);
     }
+
+    // Referral section (Phase 6.1)
+    initReferralSection();
 
     // Load services + wallet config
     loadServices();
