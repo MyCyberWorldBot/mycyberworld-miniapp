@@ -7,7 +7,7 @@
  * - Payment flow: QR in Telegram (Mini App closes)
  * - Range: ₹300 - ₹50,000
  * - Offer banner: reads offers.json, session-based dismiss
- * - Referral: user_id from Telegram SDK → link + copy + share (Phase 6.1)
+ * - Referral: collapsible card + toggle + localStorage persistence (Phase 6.1)
  */
 
 // ==================== TELEGRAM WEB APP INIT ====================
@@ -39,6 +39,9 @@ let isSubmitting = false;
 // Offer banner state (Phase 4.3)
 let allOffers = [];
 let offerBannerDismissed = false;  // session-based (resets on reload)
+
+// Referral section state (Phase 6.1)
+const REFERRAL_STORAGE_KEY = "mcw_referral_expanded";
 
 
 // ==================== HELPER FUNCTIONS ====================
@@ -132,13 +135,13 @@ function calculateBonus(amount) {
 }
 
 
-// ==================== REFERRAL SECTION (Phase 6.1) ====================
+// ==================== REFERRAL SECTION (Phase 6.1 — Collapsible) ====================
 
 /**
- * Initialize referral section: link + copy + share buttons.
- *
- * Uses Telegram SDK user_id for personal link generation.
- * Silent no-op if user_id unavailable.
+ * Initialize referral section:
+ *   - Toggle collapse/expand with localStorage persistence
+ *   - Link + copy + share buttons
+ *   - Graceful no-op if user_id unavailable (browser test)
  */
 function initReferralSection() {
     // --- Get user_id from Telegram SDK ---
@@ -154,6 +157,36 @@ function initReferralSection() {
         const section = document.getElementById("referral-section");
         if (section) section.style.display = "none";
         return;
+    }
+
+    // --- Setup toggle button (collapsible) ---
+    const toggle = document.getElementById("referral-toggle");
+    const content = document.getElementById("referral-content");
+
+    if (toggle && content) {
+        // Restore previous state from localStorage (default: collapsed)
+        let isExpanded = false;
+        try {
+            isExpanded = localStorage.getItem(REFERRAL_STORAGE_KEY) === "true";
+        } catch (e) { /* Ignore — WebView may block localStorage */ }
+
+        // Apply initial state
+        applyReferralState(toggle, content, isExpanded);
+
+        // Click handler
+        toggle.addEventListener("click", () => {
+            haptic("light");
+            const currentlyExpanded =
+                toggle.getAttribute("aria-expanded") === "true";
+            const newState = !currentlyExpanded;
+
+            applyReferralState(toggle, content, newState);
+
+            // Persist preference
+            try {
+                localStorage.setItem(REFERRAL_STORAGE_KEY, String(newState));
+            } catch (e) { /* Ignore */ }
+        });
     }
 
     // --- Build referral link ---
@@ -226,6 +259,26 @@ function initReferralSection() {
     }
 
     console.log("[Referral] Section initialized for user:", userId);
+}
+
+
+/**
+ * Apply expanded/collapsed state to referral toggle + content.
+ *
+ * @param {HTMLElement} toggle  - Toggle button element
+ * @param {HTMLElement} content - Collapsible content wrapper
+ * @param {boolean}     expanded - True for expanded, false for collapsed
+ */
+function applyReferralState(toggle, content, expanded) {
+    if (!toggle || !content) return;
+
+    toggle.setAttribute("aria-expanded", String(expanded));
+
+    if (expanded) {
+        content.classList.add("expanded");
+    } else {
+        content.classList.remove("expanded");
+    }
 }
 
 
@@ -872,7 +925,7 @@ document.addEventListener("DOMContentLoaded", () => {
         offerCloseBtn.addEventListener("click", hideOfferBanner);
     }
 
-    // Referral section (Phase 6.1)
+    // Referral section (Phase 6.1 — collapsible)
     initReferralSection();
 
     // Load services + wallet config

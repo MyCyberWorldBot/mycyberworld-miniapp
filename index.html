@@ -82,43 +82,58 @@
         <div class="offer-timer" id="offer-timer">—</div>
     </div>
 
-    <!-- ==================== REFERRAL SECTION (Phase 6.1) ==================== -->
+    <!-- ==================== REFERRAL SECTION (Phase 6.1 — Collapsible) ==================== -->
     <section class="referral-section" id="referral-section" aria-label="Refer and Earn">
-        <div class="referral-card">
-            <div class="referral-header">
-                <span class="referral-icon" aria-hidden="true">🎁</span>
-                <h3 class="referral-title">Refer &amp; Earn</h3>
-                <span class="referral-badge">₹50 + ₹25</span>
-            </div>
-            <p class="referral-desc">
-                Invite a friend. When they make their first payment,
-                <b>you get ₹50</b> and <b>they get ₹25</b>.
-            </p>
-            <div class="referral-link-row">
-                <input
-                    type="text"
-                    id="referral-link"
-                    class="referral-link-input"
-                    value="Loading..."
-                    readonly
-                    aria-label="Your referral link"
-                />
-            </div>
-            <div class="referral-actions">
-                <button
-                    class="referral-btn referral-btn-copy"
-                    id="referral-copy-btn"
-                    type="button"
-                    aria-label="Copy referral link"
-                >📋 Copy Link</button>
-                <button
-                    class="referral-btn referral-btn-share"
-                    id="referral-share-btn"
-                    type="button"
-                    aria-label="Share referral link"
-                >📤 Share</button>
+
+        <!-- Toggle Button (always visible) -->
+        <button
+            class="referral-toggle"
+            id="referral-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="referral-content"
+            aria-label="Toggle Refer and Earn section"
+        >
+            <span class="referral-toggle-icon" aria-hidden="true">🎁</span>
+            <span class="referral-toggle-text">Refer &amp; Earn</span>
+            <span class="referral-toggle-badge">₹50 + ₹25</span>
+            <span class="referral-toggle-arrow" aria-hidden="true">▼</span>
+        </button>
+
+        <!-- Collapsible Content -->
+        <div class="referral-content" id="referral-content">
+            <div class="referral-card">
+                <p class="referral-desc">
+                    Invite a friend. When they make their first payment,
+                    <b>you get ₹50</b> and <b>they get ₹25</b>.
+                </p>
+                <div class="referral-link-row">
+                    <input
+                        type="text"
+                        id="referral-link"
+                        class="referral-link-input"
+                        value="Loading..."
+                        readonly
+                        aria-label="Your referral link"
+                    />
+                </div>
+                <div class="referral-actions">
+                    <button
+                        class="referral-btn referral-btn-copy"
+                        id="referral-copy-btn"
+                        type="button"
+                        aria-label="Copy referral link"
+                    >📋 Copy Link</button>
+                    <button
+                        class="referral-btn referral-btn-share"
+                        id="referral-share-btn"
+                        type="button"
+                        aria-label="Share referral link"
+                    >📤 Share</button>
+                </div>
             </div>
         </div>
+
     </section>
 
     <!-- ==================== LOADING STATE ==================== -->
