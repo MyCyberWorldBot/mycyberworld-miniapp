@@ -408,8 +408,33 @@ function openHelpModal() {
 
 
 /**
+ * Base64url encode (URL-safe, no padding).
+ * Used for deep-link message payload (?start=help_<base64>).
+ */
+function b64urlEncode(str) {
+    try {
+        const utf8 = new TextEncoder().encode(str);
+        let binary = "";
+        utf8.forEach((b) => { binary += String.fromCharCode(b); });
+        return btoa(binary)
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=/g, "");
+    } catch (e) {
+        console.warn("[Help] b64urlEncode failed:", e);
+        return "";
+    }
+}
+
+
+/**
  * Handle help modal submit.
- * Sends support message via tg.sendData + closes Mini App.
+ *
+ * PRIMARY: Deep link (works on ALL Telegram clients including Desktop).
+ *   Format: https://t.me/MyCyberWorldBot?start=help_<base64url>
+ *   Bot decodes it in /start handler and creates support message.
+ *
+ * FALLBACK: sendData (mobile — for messages that exceed URL length limit).
  */
 function handleHelpSubmit() {
     if (isSubmitting) return;
@@ -441,19 +466,44 @@ function handleHelpSubmit() {
 
     haptic("medium");
 
-    const payload = { type: "support", message: message };
+    // ============ PRIMARY: Deep link (all platforms) ============
+    // Telegram ?start= param max 64 chars total.
+    // 'help_' = 5 chars. Base64 of ~40 ASCII bytes ≈ 54 chars.
+    // So limit to first 40 chars of message.
+    const shortMsg = message.substring(0, 40);
+    const encoded = b64urlEncode(shortMsg);
 
+    if (encoded && (5 + encoded.length) <= 64) {
+        const deepLink =
+            `https://t.me/MyCyberWorldBot?start=help_${encoded}`;
+        try {
+            if (typeof tg.openTelegramLink === "function") {
+                console.log("[Help] Deep link:", deepLink);
+                tg.openTelegramLink(deepLink);
+                // Telegram auto-opens bot chat; Mini App closes
+                return;
+            }
+        } catch (e) {
+            console.warn("[Help] openTelegramLink failed:", e);
+        }
+    }
+
+    // ============ FALLBACK: sendData (mobile only) ============
     try {
-        tg.sendData(JSON.stringify(payload));
+        tg.sendData(JSON.stringify({ type: "support", message: message }));
+        console.log("[Help] sendData fallback used");
         setTimeout(() => {
             try { tg.close(); } catch (e) { console.warn(e); }
-        }, 300);
+        }, 500);
     } catch (error) {
-        console.error("sendData failed:", error);
+        console.error("[Help] All methods failed:", error);
         isSubmitting = false;
         if (btn) btn.disabled = false;
         if (btnText) btnText.textContent = "📩 Send Message";
-        safeAlert("Failed to send data. Please try again.");
+        safeAlert(
+            "Message could not be sent automatically. " +
+            "Please type in the bot chat:\n\n/support " + message
+        );
     }
 }
 
