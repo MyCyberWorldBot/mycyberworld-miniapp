@@ -443,6 +443,16 @@ function handleHelpSubmit() {
 
     const payload = { type: "support", message: message };
 
+    // TEMPORARY DIAGNOSTIC — remove after fix
+try {
+    alert(
+        "uid=" + (tg.initDataUnsafe?.user?.id || "NONE") +
+        " | sendData=" + (typeof tg.sendData) +
+        " | platform=" + (tg.platform || "?") +
+        " | msg_len=" + message.length
+    );
+} catch (e) {}
+
     try {
         tg.sendData(JSON.stringify(payload));
         setTimeout(() => {
