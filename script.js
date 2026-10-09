@@ -1,6 +1,6 @@
 /**
  * MyCyberWorld Bot - Mini App Frontend Logic
- * Flat services + wallet + offer banner + referral section + Telegram integration.
+ * Flat services + wallet + offer banner + referral + help/support + Telegram.
  *
  * Design:
  * - Wallet: Blue theme, ₹ Indian format, English only
@@ -8,6 +8,7 @@
  * - Range: ₹300 - ₹50,000
  * - Offer banner: reads offers.json, session-based dismiss
  * - Referral: collapsible card + toggle + localStorage persistence (Phase 6.1)
+ * - Help/Support: opens modal → sendData(type='support') (Phase 6.2)
  */
 
 // ==================== TELEGRAM WEB APP INIT ====================
@@ -42,6 +43,9 @@ let offerBannerDismissed = false;  // session-based (resets on reload)
 
 // Referral section state (Phase 6.1)
 const REFERRAL_STORAGE_KEY = "mcw_referral_expanded";
+
+// Help section state (Phase 6.2)
+const HELP_MESSAGE_MAX_LEN = 2000;
 
 
 // ==================== HELPER FUNCTIONS ====================
@@ -278,6 +282,178 @@ function applyReferralState(toggle, content, expanded) {
         content.classList.add("expanded");
     } else {
         content.classList.remove("expanded");
+    }
+}
+
+
+// ==================== HELP / SUPPORT SECTION (Phase 6.2) ====================
+
+/**
+ * Initialize help section:
+ *   - Bind "Help & Support" button
+ *   - Hide if no Telegram user_id (browser test)
+ */
+function initHelpSection() {
+    // --- Get user_id from Telegram SDK ---
+    let userId = null;
+    try {
+        userId = tg.initDataUnsafe?.user?.id;
+    } catch (e) {
+        console.warn("[Help] Could not read user_id from SDK:", e);
+    }
+
+    if (!userId) {
+        console.warn("[Help] No user_id — hiding help section");
+        const section = document.getElementById("help-section");
+        if (section) section.style.display = "none";
+        return;
+    }
+
+    // --- Bind "Help & Support" button ---
+    const btn = document.getElementById("help-open-btn");
+    if (btn) {
+        btn.addEventListener("click", () => {
+            haptic("medium");
+            openHelpModal();
+        });
+    }
+
+    console.log("[Help] Section initialized for user:", userId);
+}
+
+
+/**
+ * Open help modal (dynamic).
+ * Contains: textarea + char counter + submit.
+ */
+function openHelpModal() {
+    document.querySelector(".modal-overlay")?.remove();
+
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = `
+        <div class="modal">
+            <button class="close-btn" id="modal-close" aria-label="Close">✕</button>
+            <div class="modal-handle"></div>
+
+            <h2 class="modal-title">❓ Help &amp; Support</h2>
+            <p class="modal-subtitle">
+                Describe your issue. Admin will reply as soon as possible.
+            </p>
+
+            <label class="form-label" for="help-message">Your Message</label>
+            <textarea
+                id="help-message"
+                class="form-input"
+                placeholder="Type your message (max ${HELP_MESSAGE_MAX_LEN} characters)..."
+                maxlength="${HELP_MESSAGE_MAX_LEN}"
+                rows="5"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="sentences"
+                spellcheck="false"
+            ></textarea>
+            <div class="char-counter-row">
+                <span class="char-counter" id="help-char-counter">0 / ${HELP_MESSAGE_MAX_LEN}</span>
+            </div>
+            <div class="form-error" id="form-error"></div>
+
+            <button class="submit-btn" id="help-submit-btn" type="button">
+                <span id="help-submit-text">📩 Send Message</span>
+            </button>
+
+            <p class="wallet-hint-text">
+                ⏱️ Rate limit: 1 message per 5 minutes
+            </p>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.classList.add("active"), 10);
+
+    // Close handlers
+    document.getElementById("modal-close").addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeModal();
+    });
+
+    // --- Char counter ---
+    const msgInput = document.getElementById("help-message");
+    const counterEl = document.getElementById("help-char-counter");
+    if (msgInput && counterEl) {
+        msgInput.addEventListener("input", () => {
+            const len = msgInput.value.length;
+            counterEl.textContent = len + " / " + HELP_MESSAGE_MAX_LEN;
+            counterEl.classList.toggle(
+                "warning",
+                len > 1800 && len < HELP_MESSAGE_MAX_LEN
+            );
+            counterEl.classList.toggle(
+                "danger",
+                len >= HELP_MESSAGE_MAX_LEN
+            );
+            clearFormError();
+        });
+    }
+
+    // --- Submit ---
+    const submitBtn = document.getElementById("help-submit-btn");
+    if (submitBtn) {
+        submitBtn.addEventListener("click", handleHelpSubmit);
+    }
+
+    // Auto-focus textarea
+    setTimeout(() => msgInput?.focus(), 300);
+}
+
+
+/**
+ * Handle help modal submit.
+ * Sends support message via tg.sendData + closes Mini App.
+ */
+function handleHelpSubmit() {
+    if (isSubmitting) return;
+
+    clearFormError();
+
+    const msgInput = document.getElementById("help-message");
+    if (!msgInput) return;
+
+    const message = (msgInput.value || "").trim();
+
+    if (!message) {
+        showFormError("Please enter your message.");
+        haptic("heavy");
+        return;
+    }
+
+    if (message.length > HELP_MESSAGE_MAX_LEN) {
+        showFormError(`Message too long (max ${HELP_MESSAGE_MAX_LEN} chars).`);
+        haptic("heavy");
+        return;
+    }
+
+    isSubmitting = true;
+    const btn = document.getElementById("help-submit-btn");
+    const btnText = document.getElementById("help-submit-text");
+    if (btn) btn.disabled = true;
+    if (btnText) btnText.innerHTML = `<span class="btn-spinner"></span> Sending...`;
+
+    haptic("medium");
+
+    const payload = { type: "support", message: message };
+
+    try {
+        tg.sendData(JSON.stringify(payload));
+        setTimeout(() => {
+            try { tg.close(); } catch (e) { console.warn(e); }
+        }, 300);
+    } catch (error) {
+        console.error("sendData failed:", error);
+        isSubmitting = false;
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = "📩 Send Message";
+        safeAlert("Failed to send data. Please try again.");
     }
 }
 
@@ -717,7 +893,9 @@ function closeModal() {
 // ==================== FORM ERROR HANDLING ====================
 function showFormError(message) {
     const errEl = document.getElementById("form-error");
-    const inputEl = document.getElementById("input-value") || document.getElementById("custom-amount");
+    const inputEl = document.getElementById("input-value")
+        || document.getElementById("custom-amount")
+        || document.getElementById("help-message");
 
     if (errEl) {
         errEl.textContent = message;
@@ -731,7 +909,9 @@ function showFormError(message) {
 
 function clearFormError() {
     const errEl = document.getElementById("form-error");
-    const inputEl = document.getElementById("input-value") || document.getElementById("custom-amount");
+    const inputEl = document.getElementById("input-value")
+        || document.getElementById("custom-amount")
+        || document.getElementById("help-message");
 
     if (errEl) errEl.classList.remove("visible");
     if (inputEl) inputEl.classList.remove("error");
@@ -927,6 +1107,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Referral section (Phase 6.1 — collapsible)
     initReferralSection();
+
+    // Help section (Phase 6.2 — support)
+    initHelpSection();
 
     // Load services + wallet config
     loadServices();
