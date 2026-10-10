@@ -8,7 +8,10 @@
  * - Range: ₹300 - ₹50,000
  * - Offer banner: reads offers.json, session-based dismiss
  * - Referral: collapsible card + toggle + localStorage persistence (Phase 6.1)
- * - Help/Support: opens modal → sendData(type='support') (Phase 6.2)
+ * - Help/Support: deep link with base64url payload (Phase 6.2)
+ * - Service submit: deep link with base64url payload (Phase 8.0.9)
+ *   ↳ Fixes tg.sendData() failure on Desktop + Telegram Web K
+ *   ↳ Fallback: sendData for long payloads (mobile only)
  */
 
 // ==================== TELEGRAM WEB APP INIT ====================
@@ -409,7 +412,7 @@ function openHelpModal() {
 
 /**
  * Base64url encode (URL-safe, no padding).
- * Used for deep-link message payload (?start=help_<base64>).
+ * Used for deep-link payloads (?start=help_<base64> or ?start=svc_<base64>).
  */
 function b64urlEncode(str) {
     try {
@@ -421,7 +424,7 @@ function b64urlEncode(str) {
             .replace(/\//g, "_")
             .replace(/=/g, "");
     } catch (e) {
-        console.warn("[Help] b64urlEncode failed:", e);
+        console.warn("[b64urlEncode] failed:", e);
         return "";
     }
 }
@@ -1032,6 +1035,31 @@ function validateInput(service, value) {
         }
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // Phase 8.0.7 — New API validators
+    // ═══════════════════════════════════════════════════════════════
+
+    // tg_to_num_backup — Telegram ID (numeric, 5-15 digits)
+    if (feature === "tg_to_num_backup") {
+        if (!/^\d{5,15}$/.test(value)) {
+            return "Please enter a valid numeric Telegram ID (5-15 digits).";
+        }
+    }
+
+    // ration_info — Ration card number (min 8 digits)
+    if (feature === "ration_info") {
+        if (value.replace(/\D/g, "").length < 8) {
+            return "Please enter a valid ration card number.";
+        }
+    }
+
+    // vehicle_to_num_backup — Vehicle registration (min 5 chars)
+    if (feature === "vehicle_to_num_backup") {
+        if (value.replace(/\s/g, "").length < 5) {
+            return "Please enter a valid vehicle registration number.";
+        }
+    }
+
     return null;
 }
 
@@ -1078,6 +1106,44 @@ function handleSubmit(service) {
 
     haptic("medium");
 
+    // ═══════════════════════════════════════════════════════════════
+    // PRIMARY: Deep link (works on ALL platforms — Phase 8.0.9)
+    //   - Telegram Desktop ✅
+    //   - Telegram Web K ✅ (bug that broke sendData)
+    //   - Telegram Web A ✅
+    //   - Telegram Mobile ✅
+    //
+    // Uses compact keys {s, i} to fit Telegram's 64-char /start limit.
+    // Bot's start_command detects "svc_" prefix → decodes → processes.
+    // Reference: Phase 6.2 Help button (same pattern, proven working).
+    // ═══════════════════════════════════════════════════════════════
+    const compactPayload = { s: service.code, i: inputValue };
+    let encoded = "";
+    try {
+        encoded = b64urlEncode(JSON.stringify(compactPayload));
+    } catch (e) {
+        console.warn("[Service] b64urlEncode failed:", e);
+    }
+
+    if (encoded && (4 + encoded.length) <= 64) {
+        const deepLink = `https://t.me/MyCyberWorldBot?start=svc_${encoded}`;
+        try {
+            if (typeof tg.openTelegramLink === "function") {
+                console.log("[Service] Deep link:", deepLink);
+                tg.openTelegramLink(deepLink);
+                return;  // ✅ Telegram opens bot chat; Mini App closes
+            }
+        } catch (e) {
+            console.warn("[Service] Deep link failed, falling back to sendData:", e);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // FALLBACK: sendData (mobile only)
+    //   - Triggered when payload > 64 chars (e.g., very long emails)
+    //   - Works reliably on Telegram Mobile
+    //   - On Desktop/Web K, long payloads still fail — acceptable edge case
+    // ═══════════════════════════════════════════════════════════════
     const payload = {
         service_code: service.code,
         input_value: inputValue
