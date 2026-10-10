@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-10T11:09:58.379006+00:00",
-  "count": 10,
+  "generated_at": "2026-10-10T11:43:15.697264+00:00",
+  "count": 13,
   "wallet": {
     "currency": "INR",
     "currency_symbol": "₹",
@@ -168,6 +168,42 @@
       "requires_consent": true,
       "is_active": true,
       "display_order": 12
+    },
+    {
+      "code": "tg_num_backup",
+      "name": "TG to Mobile Number",
+      "price": 1,
+      "api_feature": "tg_to_num_backup",
+      "input_label": "Enter Telegram user ID",
+      "input_type": "text",
+      "input_placeholder": "",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 13
+    },
+    {
+      "code": "ration_lookup",
+      "name": "Ration Card Info",
+      "price": 1,
+      "api_feature": "ration_info",
+      "input_label": "Enter Ration card number",
+      "input_type": "text",
+      "input_placeholder": "",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 14
+    },
+    {
+      "code": "vehicle_mobile_alt",
+      "name": "Vehicle to Mobile (Alt)",
+      "price": 1,
+      "api_feature": "vehicle_to_num_backup",
+      "input_label": "Enter vehicle number",
+      "input_type": "tel",
+      "input_placeholder": "",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 15
     }
   ]
 }
