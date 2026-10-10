@@ -12,6 +12,7 @@
  * - Service submit: deep link with base64url payload (Phase 8.0.9)
  *   ↳ Fixes tg.sendData() failure on Desktop + Telegram Web K
  *   ↳ Fallback: sendData for long payloads (mobile only)
+ *   ↳ v2.10: Uses short numeric `id` (fits 64-char limit for emails)
  * - Balance refresh: deep link (?start=balance) — Phase 8.0.x
  * - Wallet cache: localStorage fallback for menu-button open — Phase 8.0.x
  */
@@ -1147,11 +1148,19 @@ function handleSubmit(service) {
     //   - Telegram Web A ✅
     //   - Telegram Mobile ✅
     //
-    // Uses compact keys {s, i} to fit Telegram's 64-char /start limit.
-    // Bot's start_command detects "svc_" prefix → decodes → processes.
-    // Reference: Phase 6.2 Help button (same pattern, proven working).
+    // v2.10: Uses SHORT numeric id (e.g., 11) instead of code (e.g.,
+    // email_lookup). Reduces payload size so long inputs (emails) fit
+    // within Telegram's 64-char /start limit.
+    //
+    // Compact keys {s, i} → {"s":"11","i":"user@example.com"} fits!
+    // Bot's start_command detects "svc_" prefix → resolves short_id
+    // → full service_code → processes.
+    //
+    // Fallback: if service.id is null (old services.json), uses code.
     // ═══════════════════════════════════════════════════════════════
-    const compactPayload = { s: service.code, i: inputValue };
+    // v2.10: Use short numeric id (falls back to code for old services.json)
+    const serviceKey = (service.id != null) ? String(service.id) : service.code;
+    const compactPayload = { s: serviceKey, i: inputValue };
     let encoded = "";
     try {
         encoded = b64urlEncode(JSON.stringify(compactPayload));
@@ -1178,7 +1187,7 @@ function handleSubmit(service) {
 
     // ═══════════════════════════════════════════════════════════════
     // FALLBACK: sendData (mobile only)
-    //   - Triggered when payload > 64 chars (e.g., very long emails)
+    //   - Triggered when payload > 64 chars (e.g., very long inputs)
     //   - Works reliably on Telegram Mobile
     //   - On Desktop/Web K, long payloads still fail — acceptable edge case
     // ═══════════════════════════════════════════════════════════════
