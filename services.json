@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T11:43:15.697264+00:00",
+  "generated_at": "2026-10-10T18:13:06.695662+00:00",
   "count": 13,
   "wallet": {
     "currency": "INR",
@@ -50,6 +50,7 @@
   },
   "services": [
     {
+      "id": 1,
       "code": "mobile_details",
       "name": "Mobile Number Details",
       "price": 1,
@@ -62,6 +63,7 @@
       "display_order": 1
     },
     {
+      "id": 4,
       "code": "pan_details",
       "name": "PAN Details Check",
       "price": 1,
@@ -74,6 +76,7 @@
       "display_order": 4
     },
     {
+      "id": 11,
       "code": "email_lookup",
       "name": "Email to Mobile Number",
       "price": 1,
@@ -86,6 +89,7 @@
       "display_order": 5
     },
     {
+      "id": 12,
       "code": "hitech_num",
       "name": "Hi-Tech Number Info",
       "price": 1,
@@ -98,6 +102,7 @@
       "display_order": 6
     },
     {
+      "id": 13,
       "code": "instagram_lookup",
       "name": "Instagram Profile Info",
       "price": 1,
@@ -110,6 +115,7 @@
       "display_order": 7
     },
     {
+      "id": 14,
       "code": "complete_num",
       "name": "Complete Number Info",
       "price": 1,
@@ -122,6 +128,7 @@
       "display_order": 8
     },
     {
+      "id": 15,
       "code": "num_to_name",
       "name": "Mobile to Name",
       "price": 1,
@@ -134,6 +141,7 @@
       "display_order": 9
     },
     {
+      "id": 16,
       "code": "mobile_vehicle",
       "name": "Mobile to Vehicle (RC)",
       "price": 1,
@@ -146,6 +154,7 @@
       "display_order": 10
     },
     {
+      "id": 17,
       "code": "rc_pdf",
       "name": "Vehicle RC PDF",
       "price": 1,
@@ -158,6 +167,7 @@
       "display_order": 11
     },
     {
+      "id": 18,
       "code": "vehicle_mobile",
       "name": "Vehicle to Mobile Number",
       "price": 1,
@@ -170,6 +180,7 @@
       "display_order": 12
     },
     {
+      "id": 19,
       "code": "tg_num_backup",
       "name": "TG to Mobile Number",
       "price": 1,
@@ -182,6 +193,7 @@
       "display_order": 13
     },
     {
+      "id": 20,
       "code": "ration_lookup",
       "name": "Ration Card Info",
       "price": 1,
@@ -194,6 +206,7 @@
       "display_order": 14
     },
     {
+      "id": 21,
       "code": "vehicle_mobile_alt",
       "name": "Vehicle to Mobile (Alt)",
       "price": 1,
