@@ -12,6 +12,8 @@
  * - Service submit: deep link with base64url payload (Phase 8.0.9)
  *   ↳ Fixes tg.sendData() failure on Desktop + Telegram Web K
  *   ↳ Fallback: sendData for long payloads (mobile only)
+ * - Balance refresh: deep link (?start=balance) — Phase 8.0.x
+ * - Wallet cache: localStorage fallback for menu-button open — Phase 8.0.x
  */
 
 // ==================== TELEGRAM WEB APP INIT ====================
@@ -49,6 +51,9 @@ const REFERRAL_STORAGE_KEY = "mcw_referral_expanded";
 
 // Help section state (Phase 6.2)
 const HELP_MESSAGE_MAX_LEN = 2000;
+
+// Wallet cache key (Phase 8.0.x — menu button fix)
+const WALLET_CACHE_KEY = "mcw_last_balance";
 
 
 // ==================== HELPER FUNCTIONS ====================
@@ -94,15 +99,41 @@ function formatINR(amount) {
 }
 
 
-// ==================== WALLET: INIT BALANCE FROM URL ====================
+// ==================== WALLET: INIT BALANCE (Phase 8.0.x — cached fallback) ====================
+// Priority:
+//   1. URL param (?balance=X) — from /start "Open Panel" button (fresh)
+//   2. localStorage cache — from previous open (may be stale, better than 0)
+//   3. Fallback: 0 + hint to refresh
+//
+// Why: Menu button URL has NO ?balance= param — cache ensures no ₹0 flash.
 function initWalletBalanceFromURL() {
+    let loadedFromUrl = false;
+
+    // --- 1. Try URL param (fresh from /start) ---
     try {
         const params = new URLSearchParams(window.location.search);
         const bal = params.get("balance");
         if (bal !== null && !isNaN(Number(bal))) {
             walletBalance = Number(bal);
+            loadedFromUrl = true;
+
+            // Save to localStorage for next menu-button open
+            try {
+                localStorage.setItem(WALLET_CACHE_KEY, String(walletBalance));
+            } catch (e) { /* localStorage may be blocked in WebView */ }
         }
     } catch (e) { /* Ignore */ }
+
+    // --- 2. If no URL param → try localStorage cache (menu button case) ---
+    if (!loadedFromUrl) {
+        try {
+            const cached = localStorage.getItem(WALLET_CACHE_KEY);
+            if (cached !== null && !isNaN(Number(cached))) {
+                walletBalance = Number(cached);
+                console.log("[Wallet] Loaded cached balance:", walletBalance);
+            }
+        } catch (e) { /* Ignore */ }
+    }
 }
 
 
@@ -483,7 +514,10 @@ function handleHelpSubmit() {
             if (typeof tg.openTelegramLink === "function") {
                 console.log("[Help] Deep link:", deepLink);
                 tg.openTelegramLink(deepLink);
-                // Telegram auto-opens bot chat; Mini App closes
+                // Auto-close Mini App after deep link (Phase 8.0.x)
+                setTimeout(() => {
+                    try { tg.close(); } catch (e) { console.warn(e); }
+                }, 300);
                 return;
             }
         } catch (e) {
@@ -1131,7 +1165,11 @@ function handleSubmit(service) {
             if (typeof tg.openTelegramLink === "function") {
                 console.log("[Service] Deep link:", deepLink);
                 tg.openTelegramLink(deepLink);
-                return;  // ✅ Telegram opens bot chat; Mini App closes
+                // ✅ Auto-close Mini App after opening bot chat (Phase 8.0.x fix)
+                setTimeout(() => {
+                    try { tg.close(); } catch (e) { console.warn(e); }
+                }, 300);
+                return;
             }
         } catch (e) {
             console.warn("[Service] Deep link failed, falling back to sendData:", e);
@@ -1166,22 +1204,43 @@ function handleSubmit(service) {
 }
 
 
-// ==================== WALLET REFRESH HANDLER ====================
+// ==================== WALLET REFRESH HANDLER (Phase 8.0.x — deep link) ====================
 function handleWalletRefresh() {
     haptic("light");
 
-    // Show "Refreshing..." hint before closing
+    // Show "Refreshing..." hint
     const hintEl = document.getElementById("wallet-hint");
     if (hintEl) hintEl.textContent = "⏳ Refreshing...";
 
-    // Send check_balance request to bot (closes Mini App)
+    // ═══════════════════════════════════════════════════════════════
+    // PRIMARY: Deep link (works on ALL platforms — Phase 8.0.x)
+    // Format: https://t.me/MyCyberWorldBot?start=balance
+    // Bot's start_command detects "balance" arg → calls handle_balance_check
+    //   → sends fresh balance message + new "Open Panel (₹X)" button
+    // ═══════════════════════════════════════════════════════════════
+    const deepLink = `https://t.me/MyCyberWorldBot?start=balance`;
+    try {
+        if (typeof tg.openTelegramLink === "function") {
+            console.log("[Balance] Deep link:", deepLink);
+            tg.openTelegramLink(deepLink);
+            // Auto-close Mini App after opening bot chat
+            setTimeout(() => {
+                try { tg.close(); } catch (e) { console.warn(e); }
+            }, 300);
+            return;
+        }
+    } catch (e) {
+        console.warn("[Balance] Deep link failed, falling back to sendData:", e);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // FALLBACK: sendData (mobile only)
+    // ═══════════════════════════════════════════════════════════════
     try {
         tg.sendData(JSON.stringify({ type: "check_balance" }));
-
         setTimeout(() => {
             try { tg.close(); } catch (e) { console.warn(e); }
         }, 500);
-
     } catch (e) {
         console.warn("Balance refresh failed:", e);
         // Restore hint on failure
@@ -1197,7 +1256,7 @@ function handleWalletRefresh() {
 
 // ==================== INIT ====================
 document.addEventListener("DOMContentLoaded", () => {
-    // Read initial balance from URL
+    // Read initial balance (URL param OR localStorage cache)
     initWalletBalanceFromURL();
 
     // Wallet refresh button
