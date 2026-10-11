@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-11T12:01:53.067161+00:00",
-  "count": 31,
+  "generated_at": "2026-10-11T23:00:09.049509+00:00",
+  "count": 25,
   "wallet": {
     "currency": "INR",
     "currency_symbol": "₹",
@@ -49,19 +49,6 @@
     "topup_expiry_minutes": 5
   },
   "services": [
-    {
-      "id": 1,
-      "code": "mobile_details",
-      "name": "Mobile Number Details",
-      "price": 1,
-      "api_feature": "lookup_number",
-      "input_label": "Enter 10-digit mobile number",
-      "input_type": "tel",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "is_active": true,
-      "display_order": 1
-    },
     {
       "id": 4,
       "code": "pan_details",
@@ -115,19 +102,6 @@
       "display_order": 7
     },
     {
-      "id": 14,
-      "code": "complete_num",
-      "name": "Complete Number Info",
-      "price": 1,
-      "api_feature": "num_to_all_info",
-      "input_label": "Enter mobile number",
-      "input_type": "text",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "is_active": true,
-      "display_order": 8
-    },
-    {
       "id": 15,
       "code": "num_to_name",
       "name": "Mobile to Name",
@@ -139,32 +113,6 @@
       "requires_consent": true,
       "is_active": true,
       "display_order": 9
-    },
-    {
-      "id": 16,
-      "code": "mobile_vehicle",
-      "name": "Mobile to Vehicle (RC)",
-      "price": 1,
-      "api_feature": "num_to_vehicle",
-      "input_label": "Enter mobile number",
-      "input_type": "tel",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "is_active": true,
-      "display_order": 10
-    },
-    {
-      "id": 18,
-      "code": "vehicle_mobile",
-      "name": "Vehicle to Mobile Number",
-      "price": 1,
-      "api_feature": "vehicle_to_number",
-      "input_label": "Enter vehicle number",
-      "input_type": "tel",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "is_active": true,
-      "display_order": 12
     },
     {
       "id": 19,
@@ -191,45 +139,6 @@
       "requires_consent": true,
       "is_active": true,
       "display_order": 15
-    },
-    {
-      "id": 22,
-      "code": "vehicle_rto",
-      "name": "Vehicle RTO Info",
-      "price": 1,
-      "api_feature": "vehicle_rto_master",
-      "input_label": "Enter vehicle number",
-      "input_type": "text",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "is_active": true,
-      "display_order": 16
-    },
-    {
-      "id": 23,
-      "code": "vehicle_full",
-      "name": "Vehicle Full Details",
-      "price": 1,
-      "api_feature": "vehicle_full_details",
-      "input_label": "Enter vehicle number",
-      "input_type": "text",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "is_active": true,
-      "display_order": 17
-    },
-    {
-      "id": 24,
-      "code": "vehicle_challan_new",
-      "name": "Vehicle Challan Check",
-      "price": 1,
-      "api_feature": "vehicle_challan_check_v2",
-      "input_label": "Enter vehicle number",
-      "input_type": "text",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "is_active": true,
-      "display_order": 18
     },
     {
       "id": 25,
@@ -451,6 +360,19 @@
       "requires_consent": true,
       "is_active": true,
       "display_order": 35
+    },
+    {
+      "id": 42,
+      "code": "vehicle_full_address",
+      "name": "🏠 Vehicle Full Address Report",
+      "price": 1,
+      "api_feature": "vehicle_full_address",
+      "input_label": "Enter vehicle number",
+      "input_type": "text",
+      "input_placeholder": "",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 36
     }
   ]
 }
