@@ -1,5 +1,5 @@
 /* ==================================================
-   MY CYBER WORLD — Mini App Styles (Production v2.7)
+   MY CYBER WORLD — Mini App Styles (Production v2.8)
    Dark Theme • Premium • Accessible • Mobile-First
    + Wallet Section
    + Modal Scroll Lock
@@ -7,6 +7,7 @@
    + Footer T&C Link (Phase 5.2.2e+)
    + Refer & Earn Section — Collapsible (Phase 6.1)
    + Help & Support Section (Phase 6.2)
+   + User Receives Checklist (Phase 8.0.9 — v2.8)
    ================================================== */
 
 /* ==================== ROOT VARIABLES ==================== */
@@ -875,6 +876,53 @@ textarea.form-input {
     line-height: 1.5;
 }
 
+/* ==================== USER RECEIVES CHECKLIST (Phase 8.0.9 — v2.8) ==================== */
+.user-receive-section {
+    margin: 0 0 20px 0;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.05) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-left: 3px solid var(--green);
+    border-radius: 12px;
+}
+
+.user-receive-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.user-receive-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.user-receive-item {
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.4;
+    padding-left: 2px;
+    word-wrap: break-word;
+    /* Checkmark is prefixed inline by JS (✓) — green color via CSS */
+    /* The ✓ char is inside the text; we color the whole item subtly */
+}
+
+/* Optional: highlight the checkmark itself if wrapped */
+.user-receive-item::first-letter {
+    color: var(--green);
+    font-weight: 700;
+}
+
 /* ==================== CLOSE BUTTON ==================== */
 .close-btn {
     position: absolute;
@@ -1185,6 +1233,11 @@ textarea.form-input {
     .help-btn { padding: 12px 14px; font-size: 13px; }
     .help-btn-icon { font-size: 15px; }
     .char-counter { font-size: 10px; }
+
+    /* User receive responsive (Phase 8.0.9 — v2.8) */
+    .user-receive-section { padding: 12px 14px; margin-bottom: 16px; }
+    .user-receive-title { font-size: 11px; margin-bottom: 8px; }
+    .user-receive-item { font-size: 12px; }
 }
 
 @media (min-width: 768px) {

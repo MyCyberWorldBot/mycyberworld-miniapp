@@ -15,6 +15,12 @@
  *   ↳ v2.10: Uses short numeric `id` (fits 64-char limit for emails)
  * - Balance refresh: deep link (?start=balance) — Phase 8.0.x
  * - Wallet cache: localStorage fallback for menu-button open — Phase 8.0.x
+ *
+ * UPDATES (v2.11 — Phase 8.0.9):
+ * - NEW: User Receives checklist in service modal
+ *   ↳ Reads `user_receive` array from services.json
+ *   ↳ Auto-prefix ✓ (green) per item
+ *   ↳ Section hidden when array empty (backward compat)
  */
 
 // ==================== TELEGRAM WEB APP INIT ====================
@@ -899,9 +905,59 @@ function createServiceCard(service) {
 }
 
 
+// ==================== HELPER: BUILD USER RECEIVE HTML (v2.11) ====================
+/**
+ * Build the "User Receives" checklist HTML block.
+ *
+ * Reads `service.user_receive` (array of strings from services.json).
+ * Returns "" if empty / missing (backward compat with old services.json).
+ *
+ * Example output:
+ *   <div class="user-receive-section">
+ *     <div class="user-receive-title">✨ What You'll Get</div>
+ *     <ul class="user-receive-list">
+ *       <li class="user-receive-item">✓ Multiple linked records (2+)</li>
+ *       <li class="user-receive-item">✓ Full name + Father name</li>
+ *     </ul>
+ *   </div>
+ */
+function buildUserReceiveHtml(service) {
+    // Normalize: accept array OR single string
+    let items = [];
+    if (Array.isArray(service.user_receive)) {
+        items = service.user_receive;
+    } else if (typeof service.user_receive === "string" && service.user_receive.trim()) {
+        items = service.user_receive.split("\n");
+    }
+
+    // Sanitize items
+    items = items
+        .map((x) => String(x == null ? "" : x).trim())
+        .filter((x) => x.length > 0);
+
+    if (items.length === 0) return "";
+
+    const itemsHtml = items
+        .map((item) => `<li class="user-receive-item">✓ ${escapeHtml(item)}</li>`)
+        .join("");
+
+    return `
+        <div class="user-receive-section">
+            <div class="user-receive-title">✨ What You'll Get</div>
+            <ul class="user-receive-list">
+                ${itemsHtml}
+            </ul>
+        </div>
+    `;
+}
+
+
 // ==================== OPEN SERVICE MODAL ====================
 function openServiceModal(service) {
     document.querySelector(".modal-overlay")?.remove();
+
+    // v2.11 — Build user_receive checklist (empty string if none)
+    const userReceiveHtml = buildUserReceiveHtml(service);
 
     const overlay = document.createElement("div");
     overlay.className = "modal-overlay";
@@ -912,6 +968,8 @@ function openServiceModal(service) {
 
             <h2 class="modal-title">${escapeHtml(service.name)}</h2>
             <p class="modal-subtitle">${escapeHtml(service.description || "")}</p>
+
+            ${userReceiveHtml}
 
             <label class="form-label">${escapeHtml(service.input_label || "Enter value")}</label>
             <input
