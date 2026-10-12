@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-12T11:21:07.159213+00:00",
-  "count": 26,
+  "generated_at": "2026-10-12T12:41:26.519042+00:00",
+  "count": 27,
   "wallet": {
     "currency": "INR",
     "currency_symbol": "₹",
@@ -68,7 +68,7 @@
         "Telecom circle/region"
       ],
       "is_active": true,
-      "display_order": 1
+      "display_order": 2
     },
     {
       "id": 25,
@@ -90,7 +90,7 @@
         "Telecom circle"
       ],
       "is_active": true,
-      "display_order": 2
+      "display_order": 3
     },
     {
       "id": 26,
@@ -111,7 +111,7 @@
         "Demographic profile"
       ],
       "is_active": true,
-      "display_order": 3
+      "display_order": 4
     },
     {
       "id": 15,
@@ -128,7 +128,38 @@
         "Quick name lookup"
       ],
       "is_active": true,
-      "display_order": 4
+      "display_order": 5
+    },
+    {
+      "id": 46,
+      "code": "lpg_info",
+      "name": "🛢️ Mobile Number to LPG Connection Details",
+      "price": 1,
+      "api_feature": "lpg_info",
+      "input_label": "Enter LPG consumer number",
+      "input_type": "text",
+      "input_placeholder": "",
+      "requires_consent": true,
+      "user_receive": [
+        "Consumer name + Consumer ID",
+        "Consumer number + Registered mobile",
+        "Connection type (Single/Double Bottle)",
+        "Current status (Active/Inactive)",
+        "Category (Domestic/Commercial)",
+        "Tube change date + Next due date",
+        "Distributor name + Distributor code",
+        "Full address with district + pincode",
+        "eKYC status + Date + Auth type",
+        "Consumed quota (current year)",
+        "Scheme opted",
+        "Booking eligibility status",
+        "Payment eligibility status",
+        "Cylinder product details",
+        "Quantity + RSP (market price)",
+        "Promotion ID + Default status"
+      ],
+      "is_active": true,
+      "display_order": 6
     },
     {
       "id": 21,
@@ -148,7 +179,7 @@
         "Full vehicle details"
       ],
       "is_active": true,
-      "display_order": 5
+      "display_order": 7
     },
     {
       "id": 42,
@@ -177,7 +208,7 @@
         "Variant ID"
       ],
       "is_active": true,
-      "display_order": 6
+      "display_order": 8
     },
     {
       "id": 17,
@@ -212,7 +243,7 @@
         "Form type"
       ],
       "is_active": true,
-      "display_order": 7
+      "display_order": 9
     },
     {
       "id": 33,
@@ -234,7 +265,7 @@
         "Aadhaar verification"
       ],
       "is_active": true,
-      "display_order": 8
+      "display_order": 11
     },
     {
       "id": 34,
@@ -256,7 +287,7 @@
         "Member IDs + UID status"
       ],
       "is_active": true,
-      "display_order": 9
+      "display_order": 12
     },
     {
       "id": 4,
@@ -276,7 +307,7 @@
         "PAN category"
       ],
       "is_active": true,
-      "display_order": 10
+      "display_order": 13
     },
     {
       "id": 35,
@@ -295,7 +326,7 @@
         "Total linked businesses"
       ],
       "is_active": true,
-      "display_order": 11
+      "display_order": 15
     },
     {
       "id": 36,
@@ -320,7 +351,7 @@
         "E-invoice status"
       ],
       "is_active": true,
-      "display_order": 12
+      "display_order": 17
     },
     {
       "id": 37,
@@ -343,7 +374,7 @@
         "Complete address"
       ],
       "is_active": true,
-      "display_order": 13
+      "display_order": 18
     },
     {
       "id": 39,
@@ -365,7 +396,7 @@
         "Filing status"
       ],
       "is_active": true,
-      "display_order": 14
+      "display_order": 20
     },
     {
       "id": 40,
@@ -383,7 +414,7 @@
         "Business verification"
       ],
       "is_active": true,
-      "display_order": 15
+      "display_order": 21
     },
     {
       "id": 38,
@@ -405,7 +436,7 @@
         "Email addresses"
       ],
       "is_active": true,
-      "display_order": 16
+      "display_order": 23
     },
     {
       "id": 41,
@@ -427,7 +458,7 @@
         "Alternative numbers"
       ],
       "is_active": true,
-      "display_order": 17
+      "display_order": 25
     },
     {
       "id": 19,
@@ -444,7 +475,7 @@
         "Telegram account verification"
       ],
       "is_active": true,
-      "display_order": 18
+      "display_order": 26
     },
     {
       "id": 27,
@@ -466,7 +497,7 @@
         "Match score"
       ],
       "is_active": true,
-      "display_order": 19
+      "display_order": 28
     },
     {
       "id": 28,
@@ -488,7 +519,7 @@
         "Validity check"
       ],
       "is_active": true,
-      "display_order": 20
+      "display_order": 29
     },
     {
       "id": 29,
@@ -509,7 +540,7 @@
         "Contact information"
       ],
       "is_active": true,
-      "display_order": 21
+      "display_order": 30
     },
     {
       "id": 30,
@@ -535,7 +566,7 @@
         "Banking hours"
       ],
       "is_active": true,
-      "display_order": 22
+      "display_order": 31
     },
     {
       "id": 31,
@@ -562,7 +593,7 @@
         "Proxy/Hosting detection"
       ],
       "is_active": true,
-      "display_order": 23
+      "display_order": 32
     },
     {
       "id": 32,
@@ -587,7 +618,7 @@
         "Repo descriptions"
       ],
       "is_active": true,
-      "display_order": 24
+      "display_order": 33
     },
     {
       "id": 11,
@@ -606,7 +637,7 @@
         "Email verification"
       ],
       "is_active": true,
-      "display_order": 25
+      "display_order": 34
     },
     {
       "id": 13,
@@ -625,7 +656,7 @@
         "Public contact info"
       ],
       "is_active": true,
-      "display_order": 26
+      "display_order": 35
     }
   ]
 }
