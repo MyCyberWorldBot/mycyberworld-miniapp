@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-11T23:00:09.049509+00:00",
-  "count": 25,
+  "generated_at": "2026-10-12T01:02:09.214040+00:00",
+  "count": 26,
   "wallet": {
     "currency": "INR",
     "currency_symbol": "₹",
@@ -113,6 +113,19 @@
       "requires_consent": true,
       "is_active": true,
       "display_order": 9
+    },
+    {
+      "id": 17,
+      "code": "rc_pdf",
+      "name": "Vehicle RC PDF",
+      "price": 1,
+      "api_feature": "rc_to_pdf",
+      "input_label": "Enter vehicle number",
+      "input_type": "text",
+      "input_placeholder": "",
+      "requires_consent": true,
+      "is_active": true,
+      "display_order": 11
     },
     {
       "id": 19,
