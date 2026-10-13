@@ -15,6 +15,17 @@
  *   ↳ v2.10: Uses short numeric `id` (fits 64-char limit for emails)
  * - Balance refresh: deep link (?start=balance) — Phase 8.0.x
  * - Wallet cache: localStorage fallback for menu-button open — Phase 8.0.x
+ * - Wallet topup: deep link with base64url payload (Phase 8C)
+ *   ↳ Fixes tg.sendData() failure on Desktop + Telegram Web K/Web A
+ *   ↳ Payload: {t: "topup", a: amount} → 29-char base64
+ *   ↳ Fallback: sendData for mobile
+ *
+ * UPDATES (v2.12 — Phase 8C):
+ * - FIX: Wallet topup now uses deep-link pattern (was broken on Desktop/Web)
+ *   ↳ tg.sendData() silently failed on Desktop/Web K/Web A
+ *   ↳ Now uses tg.openTelegramLink("...?start=pay_<base64url>")
+ *   ↳ Bot's start_command handles "pay_" prefix (Phase 8C)
+ *   ↳ Fallback sendData still present (mobile compat)
  *
  * UPDATES (v2.11 — Phase 8.0.9):
  * - NEW: User Receives checklist in service modal
@@ -772,7 +783,7 @@ function updateBonusPreview(amount) {
 }
 
 
-// ==================== HANDLE TOPUP SUBMIT ====================
+// ==================== HANDLE TOPUP SUBMIT (Phase 8C — FIXED) ====================
 function handleTopupSubmit() {
     if (isSubmitting) return;
 
@@ -809,15 +820,56 @@ function handleTopupSubmit() {
 
     haptic("medium");
 
-    const payload = { type: "topup", amount: amount };
-
+    // ═══════════════════════════════════════════════════════════════
+    // PRIMARY: Deep link (works on ALL platforms — Phase 8C)
+    //   - Telegram Desktop ✅
+    //   - Telegram Web K ✅
+    //   - Telegram Web A ✅
+    //   - Telegram Mobile ✅
+    //
+    // Compact payload: {t: "topup", a: amount} → ~29-char base64
+    // Bot's start_command detects "pay_" prefix → calls
+    // handle_topup_request() → generates QR → sends via reply_photo.
+    //
+    // Mirror of handleSubmit() (service) pattern — Phase 8.0.9.
+    // ═══════════════════════════════════════════════════════════════
+    const compactPayload = { t: "topup", a: amount };
+    let encoded = "";
     try {
-        tg.sendData(JSON.stringify(payload));
+        encoded = b64urlEncode(JSON.stringify(compactPayload));
+    } catch (e) {
+        console.warn("[Topup] b64urlEncode failed:", e);
+    }
+
+    if (encoded && (4 + encoded.length) <= 64) {
+        const deepLink = `https://t.me/MyCyberWorldBot?start=pay_${encoded}`;
+        try {
+            if (typeof tg.openTelegramLink === "function") {
+                console.log("[Topup] Deep link:", deepLink);
+                tg.openTelegramLink(deepLink);
+                // ✅ Auto-close Mini App after opening bot chat
+                setTimeout(() => {
+                    try { tg.close(); } catch (e) { console.warn(e); }
+                }, 300);
+                return;
+            }
+        } catch (e) {
+            console.warn("[Topup] Deep link failed, falling back to sendData:", e);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // FALLBACK: sendData (mobile only)
+    //   - Triggered when deep-link unavailable (edge case)
+    //   - Preserves backward compatibility for mobile
+    // ═══════════════════════════════════════════════════════════════
+    try {
+        tg.sendData(JSON.stringify({ type: "topup", amount: amount }));
         setTimeout(() => {
             try { tg.close(); } catch (e) { console.warn(e); }
         }, 300);
     } catch (error) {
-        console.error("sendData failed:", error);
+        console.error("[Topup] All methods failed:", error);
         isSubmitting = false;
         if (btn) btn.disabled = false;
         if (btnText) btnText.textContent = "Proceed to Pay";
