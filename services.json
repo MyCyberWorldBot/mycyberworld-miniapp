@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T19:09:47.288519+00:00",
+  "generated_at": "2026-10-15T19:36:14.731012+00:00",
   "count": 36,
   "wallet": {
     "currency": "INR",
@@ -251,7 +251,8 @@
         "Product Details",
         "Quantity",
         "RSP (₹)",
-        "Promotion ID"
+        "Promotion ID",
+        "Default Status"
       ],
       "is_active": true,
       "display_order": 14
@@ -580,7 +581,24 @@
         "Fuel Type",
         "Raw Fuel Type",
         "RC Status (Active/Inactive)",
-        "RC Model"
+        "RC Model",
+        "RC Owner Name (Masked)",
+        "RC Owner Serial",
+        "RC Vehicle Class",
+        "Registered At",
+        "Registered Place",
+        "Registration Year",
+        "Seat Capacity",
+        "State Code + Name",
+        "State ID",
+        "Tax Upto",
+        "Unladen Weight",
+        "Vehicle Category",
+        "Vehicle Class Description",
+        "Transmission Type",
+        "Variant Display Name",
+        "Variant ID",
+        "Year"
       ],
       "is_active": true,
       "display_order": 27
@@ -647,7 +665,14 @@
         "Cubic Capacity",
         "Seating Capacity",
         "Fitness Upto",
-        "Insurance Company"
+        "Insurance Company",
+        "Insurance Number",
+        "Insurance Expiry",
+        "Insurance Validity",
+        "PUC Number",
+        "PUC Upto",
+        "Tax Upto (LTT)",
+        "Vehicle Age"
       ],
       "is_active": true,
       "display_order": 29
@@ -777,7 +802,17 @@
         "RTGS Available",
         "NEFT Available",
         "IMPS Available",
-        "UPI Available"
+        "UPI Available",
+        "Net Banking",
+        "Mobile Banking",
+        "SMS Banking",
+        "Cheque Truncation",
+        "RBI License Status",
+        "Nearby Post Offices (4+)",
+        "Banking Hours (Weekdays)",
+        "Saturday Hours",
+        "Sunday Hours",
+        "Lunch Hours"
       ],
       "is_active": true,
       "display_order": 36
@@ -842,7 +877,13 @@
         "Country Flag (Emoji + Unicode)",
         "Languages Spoken",
         "Hosting Facility (Yes/No)",
-        "Is Crawler"
+        "Is Crawler",
+        "Is Proxy",
+        "Is Tor",
+        "Threat Level (Low/Medium/High)",
+        "Geoname ID",
+        "ISIC + NAICS Codes",
+        "GMT Offset"
       ],
       "is_active": true,
       "display_order": 38
