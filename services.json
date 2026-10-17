@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-16T09:51:42.877169+00:00",
-  "count": 36,
+  "generated_at": "2026-10-17T07:14:49.501389+00:00",
+  "count": 34,
   "wallet": {
     "currency": "INR",
     "currency_symbol": "₹",
@@ -71,7 +71,7 @@
       "id": 47,
       "code": "hitech_num",
       "name": "📡 Mobile Number Details",
-      "price": 99,
+      "price": 149,
       "api_feature": "hitech_num_info",
       "input_label": "Enter 10-digit mobile number",
       "input_type": "text",
@@ -93,8 +93,8 @@
     {
       "id": 52,
       "code": "hitech_lookup_v2",
-      "name": "📡 Hi-Tech Number Details",
-      "price": 99,
+      "name": "Advanced Mobile Number Details",
+      "price": 179,
       "api_feature": "lookup_number",
       "input_label": "Enter 10-digit mobile number",
       "input_type": "tel",
@@ -134,52 +134,6 @@
       ],
       "is_active": true,
       "display_order": 4
-    },
-    {
-      "id": 48,
-      "code": "number_deep",
-      "name": "🔍 Advanced Mobile Number Details",
-      "price": 199,
-      "api_feature": "number_deep_lookup",
-      "input_label": "Enter 10-digit mobile number",
-      "input_type": "tel",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "user_receive": [
-        "Total Records",
-        "Registered Name",
-        "Father's Name",
-        "Mobile Number",
-        "Alternate Mobile",
-        "Complete Address",
-        "Telecom Circle",
-        "Document ID"
-      ],
-      "is_active": true,
-      "display_order": 5
-    },
-    {
-      "id": 91,
-      "code": "num_to_all",
-      "name": "📞 Mobile Number to Complete Report",
-      "price": 199,
-      "api_feature": "num_to_all_info",
-      "input_label": "Enter 10-digit mobile number",
-      "input_type": "text",
-      "input_placeholder": "",
-      "requires_consent": true,
-      "user_receive": [
-        "Total Records",
-        "Name",
-        "Father's Name",
-        "Mobile Number",
-        "Alternate Mobile",
-        "Complete Address",
-        "Telecom Circle",
-        "Document ID"
-      ],
-      "is_active": true,
-      "display_order": 6
     },
     {
       "id": 60,
